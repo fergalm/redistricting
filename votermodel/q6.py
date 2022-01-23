@@ -99,15 +99,18 @@ def gen_precinct_racial_data():
         TotalPop
         TotalWhite
         TotalBlack
+        TotalWhiteNotHispanic
         VotingTotal
         VotingWhite
         VotingBlack
+        VotingWhiteNotHispanic
     """.split()
 
     for c in cols:
         vals = blocks[c].values.astype(float)
         pct_geoms[c] = np.dot(overlap, vals)    
 
+    idebug()
     outfn = "data/precinct_data/precinct_race_data.csv"
     frm.meta.save_metadata(outfn + ".json")
     pct_geoms.to_csv(outfn)
@@ -122,9 +125,11 @@ def load_block_level_pop():
         P1_001N='TotalPop',
         P1_003N='TotalWhite',
         P1_004N='TotalBlack',
+        P2_005N='TotalWhiteNotHispanic',
         P3_001N='VotingTotal',
         P3_003N='VotingWhite',
         P3_004N='VotingBlack',
+        P4_005N='VotingWhiteNotHispanic',
     )
 
     df = cq.query_block(2020, 'dec', 'pl', '24005', mapper.keys())
